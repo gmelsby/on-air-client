@@ -22,6 +22,9 @@ export default function HomePage({lightState, updateState, isConnected}:
       console.log('unwilling to update an offline light');
       return;
     }
+    if (newState === lightState) {
+      console.log('light is already in the requested state');
+    }
     updateState(newState);
   }, [updateState, lightState])
 
