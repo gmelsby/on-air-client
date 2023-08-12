@@ -4,7 +4,12 @@ import mqtt from 'paho-mqtt';
 import HomePage from './pages/Homepage';
 import { LightCategory } from './LightCategory';
 
-
+const backgroundColorMap = new Map([
+  [LightCategory.Off, 'grey'],
+  [LightCategory.OnAir, 'red'],
+  [LightCategory.OnCamera, 'blue'],
+  [LightCategory.Offline, 'white']
+]);
 
 // get env variables
 const broker = import.meta.env.VITE_BROKER_ADDRESS;
@@ -36,12 +41,19 @@ export default function App() {
     mqttClient.onMessageArrived = (message => {
       console.log(`Received message ${message.payloadString}`);
       if (message.destinationName == 'light/status') {
-        if (Object.values(LightCategory).includes(message.payloadString as LightCategory)) {
-          setLightState(message.payloadString as LightCategory);
+        const newState = message.payloadString;
+        if (Object.values(LightCategory).includes(newState as LightCategory)) {
+          setLightState(newState as LightCategory);
+          // update background color
+          const newBackground = backgroundColorMap.get(newState as LightCategory);
+          if (newBackground !== undefined) {
+            document.body.style.background = newBackground;
+          }
         }
       }
   });
 
+    // handle lost connections
     mqttClient.onConnectionLost = (error => {
       console.log(`Connection lost: ${error.errorCode}: ${error.errorMessage}`);
       setIsConnected(false);

@@ -1,4 +1,5 @@
 // maps LightCategory to display string
+import { useCallback } from 'react';
 import { LightCategory } from '../LightCategory';
 
 const displayMap = new Map([
@@ -15,6 +16,15 @@ export default function HomePage({lightState, updateState, isConnected}:
     updateState: (newState: LightCategory) => void,
     isConnected: boolean,
   }) {
+
+  const attemptUpdate = useCallback((newState: LightCategory) => {
+    if (lightState === LightCategory.Offline) {
+      console.log('unwilling to update an offline light');
+      return;
+    }
+    updateState(newState);
+  }, [updateState, lightState])
+
   return (
   <div >
     <div>
@@ -27,13 +37,13 @@ export default function HomePage({lightState, updateState, isConnected}:
       </h2>
     </div>
     <div>
-      <button onClick={() => updateState(LightCategory.Off)}>
+      <button onClick={() => attemptUpdate(LightCategory.Off)}>
         Off
       </button>
-      <button onClick={() => updateState(LightCategory.OnAir)}>
+      <button onClick={() => attemptUpdate(LightCategory.OnAir)}>
         On Air
       </button>
-      <button onClick={() => updateState(LightCategory.OnCamera)}>
+      <button onClick={() => attemptUpdate(LightCategory.OnCamera)}>
         On Camera
       </button>
     </div>
