@@ -1,22 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import './App.css';
 import mqtt from 'paho-mqtt';
+import HomePage from './pages/Homepage';
+import { LightCategory } from './LightCategory';
 
-// category of light status
-enum LightCategory {
-  Off = 'off',
-  OnAir = 'on-air',
-  OnCamera = 'on-camera',
-  Offline = 'offline'
-}
 
-// maps LightCategory to display string
-const displayMap = new Map([
-  [LightCategory.Off, 'Off'],
-  [LightCategory.OnAir, 'On Air'],
-  [LightCategory.OnCamera, 'On Camera'],
-  [LightCategory.Offline, 'Offline']
-]);
 
 // get env variables
 const broker = import.meta.env.VITE_BROKER_ADDRESS;
@@ -30,10 +18,10 @@ export default function App() {
   const [client, setClient] = useState<mqtt.Client | undefined>(undefined);
   const [isConnected, setIsConnected] = useState(false);
 
-  // handle mqtt setup
   useEffect(() => {
     // Create a MQTT client instance using WebSocket
     const mqttClient = new mqtt.Client(broker, brokerPort, `pahojs_${Math.random().toString(36).substring(7)}`);
+    setClient(mqttClient);
     console.log('created mqttClient');
 
     // Handle connection
@@ -67,7 +55,6 @@ export default function App() {
       password: pass,
       useSSL: true
     })
-    setClient(mqttClient);
 
     // Cleanup on unmount
     return () => {
@@ -90,27 +77,6 @@ export default function App() {
   }, [client]);
 
   return (
-    <div >
-      <div>
-        <h1>{lightState === undefined ? 
-          'Loading' : 
-          displayMap.get(lightState)}
-        </h1>
-        <h2>
-          Connection State: {isConnected ? 'Connected' : 'Not Connected'}
-        </h2>
-      </div>
-      <div>
-        <button onClick={() => updateState(LightCategory.Off)}>
-          Off
-        </button>
-        <button onClick={() => updateState(LightCategory.OnAir)}>
-          On Air
-        </button>
-        <button onClick={() => updateState(LightCategory.OnCamera)}>
-          On Camera
-        </button>
-      </div>
-    </div>
+    <HomePage {...{ lightState, updateState, isConnected }}/>
   );
 }
