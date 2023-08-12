@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useState } from 'react'
-import './App.css'
-
-const lightAddress = import.meta.env.VITE_LIGHT_ADDRESS;
+import { useCallback, useEffect, useState } from 'react';
+import './App.css';
+import mqtt from 'paho-mqtt';
 
 // category of light status
 enum LightCategory {
@@ -17,46 +16,74 @@ const displayMap = new Map([
   [LightCategory.OnCamera, 'On Camera']
 ]);
 
+// get env variables
+const broker = import.meta.env.VITE_BROKER_ADDRESS;
+const brokerPort = parseInt(import.meta.env.VITE_BROKER_PORT);
+const username = import.meta.env.VITE_MQTT_USER;
+const pass = import.meta.env.VITE_MQTT_PASS;
+
 export default function App() {
   const [lightState, setLightState] = useState<LightCategory | undefined>(undefined);
+  // keeps track of mqtt client
+  const [client, setClient] = useState<mqtt.Client | undefined>(undefined);
+  const [isConnected, setIsConnected] = useState(false);
 
-  // fetch state upon page load
+  // handle mqtt setup
   useEffect(() => {
-    fetch(lightAddress)
-      .then(async response => {
-        if (!response.ok) {
-          throw new Error('issue fetching state');
-        }
-        const responseBody = await response.json();
-        setLightState(responseBody.state)
-      })
-      .catch(error => {
-        console.error(error);
-        return;
-      });
-  }, [setLightState])
+    // Create a MQTT client instance using WebSocket
+    const mqttClient = new mqtt.Client(broker, brokerPort, `pahojs_${Math.random().toString(36).substring(7)}`);
+    console.log('created mqttClient');
 
-  // update state on microcontroller
-  const updateState = useCallback((newState: LightCategory) => {
-    fetch(lightAddress, {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({state: newState})
-    })
-    .then(async response => {
-      if (!response.ok) {
-        throw new Error('issue updating state');
+    // Handle connection
+    const onConnect = () => {
+      console.log('Connected to MQTT broker via WebSocket');
+      setIsConnected(true);
+      // Subscribe to a topic
+      mqttClient.subscribe('light/status');
+    };
+
+    // Handle incoming messages
+    mqttClient.onMessageArrived = (message => {
+      console.log(`Received message ${message.payloadString}`);
+      if (message.destinationName == 'light/status') {
+        if (Object.values(LightCategory).includes(message.payloadString as LightCategory)) {
+          setLightState(message.payloadString as LightCategory);
+        }
       }
-      const responseBody = await response.json();
-      setLightState(responseBody.state)
+  });
+
+    mqttClient.onConnectionLost = (error => {
+      console.log(`Connection lost: ${error.errorCode}: ${error.errorMessage}`);
+      setIsConnected(false);
+    });
+
+    mqttClient.connect({onSuccess: onConnect, 
+      onFailure: () => {console.log('failed to connect')},
+      reconnect: true,
+      userName: username,
+      password: pass
     })
-    .catch(error => {
-      console.log(error);
-    })
-  }, [setLightState])
+    setClient(mqttClient);
+
+    // Cleanup on unmount
+    return () => {
+      // Unsubscribe and disconnect
+      if (mqttClient.isConnected()) {
+        mqttClient.unsubscribe('light/status');
+        mqttClient.disconnect();
+      }
+    };
+  }, [setClient]);
+
+  // send out an update
+  const updateState = useCallback((newState: LightCategory) => {
+    const message = new mqtt.Message(newState);
+    message.destinationName = 'light/status';
+    message.qos = 1;
+    message.retained = true;
+    if (client?.isConnected())
+      client?.send(message);
+  }, [client]);
 
   return (
     <div >
@@ -65,6 +92,9 @@ export default function App() {
           'Loading' : 
           displayMap.get(lightState)}
         </h1>
+        <h2>
+          Connection State: {isConnected ? 'Connected' : 'Not Connected'}
+        </h2>
       </div>
       <div>
         <button onClick={() => updateState(LightCategory.Off)}>
