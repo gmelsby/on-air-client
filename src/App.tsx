@@ -60,6 +60,7 @@ export default function App() {
     mqttClient.connect({onSuccess: onConnect, 
       onFailure: () => {console.log('failed to connect')},
       reconnect: true,
+      timeout: 5,
       userName: username,
       password: pass
     })
