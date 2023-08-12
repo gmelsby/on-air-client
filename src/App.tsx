@@ -6,14 +6,16 @@ import mqtt from 'paho-mqtt';
 enum LightCategory {
   Off = 'off',
   OnAir = 'on-air',
-  OnCamera = 'on-camera'
+  OnCamera = 'on-camera',
+  Offline = 'offline'
 }
 
 // maps LightCategory to display string
 const displayMap = new Map([
   [LightCategory.Off, 'Off'],
   [LightCategory.OnAir, 'On Air'],
-  [LightCategory.OnCamera, 'On Camera']
+  [LightCategory.OnCamera, 'On Camera'],
+  [LightCategory.Offline, 'Offline']
 ]);
 
 // get env variables
@@ -62,7 +64,8 @@ export default function App() {
       reconnect: true,
       timeout: 5,
       userName: username,
-      password: pass
+      password: pass,
+      useSSL: true
     })
     setClient(mqttClient);
 
