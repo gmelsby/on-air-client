@@ -29,24 +29,33 @@ export default function HomePage({lightState, updateState, isConnected}:
   }, [updateState, lightState])
 
   return (
-  <div >
-    <div>
-      <h1>{lightState === undefined || ! isConnected ?
+  <div>
+    <div className="text-center p-3 my-3">
+      <h1 className="text-3xl text-white font-bold text-stroke">{lightState === undefined || ! isConnected ?
         'Attempting to connect...' : 
         displayMap.get(lightState)}
       </h1>
     </div>
     {isConnected && lightState !== 'offline' &&
-    <div>
-      <button onClick={() => attemptUpdate(LightCategory.Off)}>
-        Off
-      </button>
-      <button onClick={() => attemptUpdate(LightCategory.OnAir)}>
-        On Air
-      </button>
-      <button onClick={() => attemptUpdate(LightCategory.OnCamera)}>
-        On Camera
-      </button>
+    <div className='flex flex-col md:flex-row justify-center'>
+      {lightState !== 'off' &&
+        <button className="btn bg-gray-600 m-2 text-stroke"
+          onClick={() => attemptUpdate(LightCategory.Off)}>
+          Off
+        </button>
+      }
+      {lightState !== 'on-air' &&
+        <button className="btn bg-red-600 m-2 text-stroke"
+          onClick={() => attemptUpdate(LightCategory.OnAir)}>
+          On Air
+        </button>
+      }
+      {lightState !== 'on-camera' &&
+        <button className="btn bg-blue-600 m-2 text-stroke"
+          onClick={() => attemptUpdate(LightCategory.OnCamera)}>
+          On Camera
+        </button>
+      }
     </div>
     }
   </div>

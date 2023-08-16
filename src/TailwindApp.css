@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  background-color: grey;
+}
+
+.text-stroke {
+  text-shadow: 2px 2px 0 var(--stroke-color, black),
+  -1px -1px 1px var(--stroke-color, black),  
+   1px -1px 1px var(--stroke-color, black),
+   -1px 1px 1px var(--stroke-color, black),
+    1px 1px 1px var(--stroke-color, black);
+}
+
+.text-stroke-white {
+  --stroke-color: white;
+}
+
+.btn {
+  @apply font-bold py-2 px-4 rounded-md border-black border-2 text-white;
+}

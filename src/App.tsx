@@ -8,7 +8,7 @@ const backgroundColorMap = new Map([
   [LightCategory.Off, 'grey'],
   [LightCategory.OnAir, 'red'],
   [LightCategory.OnCamera, 'blue'],
-  [LightCategory.Offline, 'white']
+  [LightCategory.Offline, 'black']
 ]);
 
 // get env variables
