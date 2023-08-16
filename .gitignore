@@ -1,3 +1,6 @@
+# Tailwind creates our build css
+*/App.css
+
 .env
 # Logs
 logs
