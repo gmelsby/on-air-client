@@ -31,14 +31,12 @@ export default function HomePage({lightState, updateState, isConnected}:
   return (
   <div >
     <div>
-      <h1>{lightState === undefined ? 
-        'Loading' : 
+      <h1>{lightState === undefined || ! isConnected ?
+        'Attempting to connect...' : 
         displayMap.get(lightState)}
       </h1>
-      <h2>
-        Connection State: {isConnected ? 'Connected' : 'Not Connected'}
-      </h2>
     </div>
+    {isConnected && lightState !== 'offline' &&
     <div>
       <button onClick={() => attemptUpdate(LightCategory.Off)}>
         Off
@@ -50,6 +48,7 @@ export default function HomePage({lightState, updateState, isConnected}:
         On Camera
       </button>
     </div>
+    }
   </div>
   );
 }
