@@ -1,7 +1,7 @@
 // maps LightCategory to display string
 import { useCallback } from 'react';
 import { LightCategory } from '../LightCategory';
-import GrowingCircle from '../components/GrowingCircle';
+import BackgroundColorChanger from '../components/BackgroundColorChanger';
 
 const displayMap = new Map([
   [LightCategory.Off, 'Off'],
@@ -31,7 +31,7 @@ export default function HomePage({lightState, updateState, isConnected}:
 
   return (
   <>
-    <GrowingCircle {...{lightState}} />
+    <BackgroundColorChanger {...{lightState}} />
     <div className="text-center p-3 my-3">
       <h1 className="text-3xl text-white font-bold text-stroke">{lightState === undefined || ! isConnected ?
         'Attempting to connect...' : 
