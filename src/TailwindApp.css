@@ -6,6 +6,10 @@ body {
   background-color: grey;
 }
 
+html, body, #root, #root>div {
+  height: 100%
+}
+
 .text-stroke {
   text-shadow: 2px 2px 0 var(--stroke-color, black),
   -1px -1px 1px var(--stroke-color, black),  
