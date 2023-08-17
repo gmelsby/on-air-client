@@ -3,5 +3,5 @@ export enum LightCategory {
   Off = 'off',
   OnAir = 'on-air',
   OnCamera = 'on-camera',
-  Offline = 'offline'
+  Offline = 'offline',
 }
