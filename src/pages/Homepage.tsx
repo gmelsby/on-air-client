@@ -1,7 +1,7 @@
 // maps LightCategory to display string
 import { useCallback } from 'react';
 import { LightCategory } from '../LightCategory';
-import BackgroundColorChanger from '../components/BackgroundColorChanger';
+import useBackgroundColorChanger from '../hooks/useBackgroundColorChanger';
 
 // map from LightCategory to text representation
 const displayMap = new Map([
@@ -20,6 +20,8 @@ export default function HomePage({
   updateState: (newState: LightCategory) => void;
   isConnected: boolean;
 }) {
+  // automatically update background color when prop value changes
+  useBackgroundColorChanger(lightState);
   // function to push new state to MQTT server
   const attemptUpdate = useCallback(
     (newState: LightCategory) => {
@@ -37,7 +39,6 @@ export default function HomePage({
 
   return (
     <>
-      <BackgroundColorChanger {...{ lightState }} />
       <div className="flex flex-col justify-around align-middle">
         <div
           className={`text-center${

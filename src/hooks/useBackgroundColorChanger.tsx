@@ -9,11 +9,9 @@ const backgroundColorMap = new Map([
   [LightCategory.Offline, 'black-background'],
 ]);
 
-export default function BackgroundColorChanger({
-  lightState,
-}: {
-  lightState: LightCategory | undefined;
-}) {
+export default function BackgroundColorChanger(
+  lightState: LightCategory | undefined,
+) {
   // every time lightState changes, change the class of the body element
   useEffect(() => {
     const newBackground = backgroundColorMap.get(lightState as LightCategory);
@@ -21,6 +19,4 @@ export default function BackgroundColorChanger({
       document.body.className = newBackground;
     }
   }, [lightState]);
-
-  return <></>;
 }
