@@ -21,3 +21,30 @@ body {
 .btn {
   @apply font-bold py-2 px-4 rounded-md border-black border-2 text-white;
 }
+
+.growing-circle {
+  overflow: hidden;
+  width: 10vw;
+  height: 10vh;
+  margin: auto;
+  border-radius: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+}
+
+.growing {
+  animation: grow 1s;
+}
+
+@keyframes grow {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(20);
+  }
+}
