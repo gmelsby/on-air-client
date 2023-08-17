@@ -4,13 +4,6 @@ import mqtt from 'paho-mqtt';
 import HomePage from './pages/Homepage';
 import { LightCategory } from './LightCategory';
 
-const backgroundColorMap = new Map([
-  [LightCategory.Off, 'grey'],
-  [LightCategory.OnAir, 'red'],
-  [LightCategory.OnCamera, 'blue'],
-  [LightCategory.Offline, 'black']
-]);
-
 // get env variables
 const broker = import.meta.env.VITE_BROKER_ADDRESS;
 const brokerPort = parseInt(import.meta.env.VITE_BROKER_PORT);
@@ -44,11 +37,6 @@ export default function App() {
         const newState = message.payloadString;
         if (Object.values(LightCategory).includes(newState as LightCategory)) {
           setLightState(newState as LightCategory);
-          // update background color
-          const newBackground = backgroundColorMap.get(newState as LightCategory);
-          if (newBackground !== undefined) {
-            document.body.style.background = newBackground;
-          }
         }
       }
   });
