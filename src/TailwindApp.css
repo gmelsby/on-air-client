@@ -22,29 +22,22 @@ body {
   @apply font-bold py-2 px-4 rounded-md border-black border-2 text-white;
 }
 
-.growing-circle {
-  overflow: hidden;
-  width: 10vw;
-  height: 10vh;
-  margin: auto;
-  border-radius: 100%;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: -1;
+.gray-background {
+  background-color: gray;
+  transition: background-color 0.75s ease;
 }
 
-.growing {
-  animation: grow 1s;
+.red-background {
+  background-color: red;
+  transition: background-color 0.75s ease;
 }
 
-@keyframes grow {
-  0% {
-    transform: scale(0);
-  }
-  100% {
-    transform: scale(20);
-  }
+.blue-background {
+  background-color: blue;
+  transition: background-color 0.75s ease;
+}
+
+.black-background {
+  background-color: black;
+  transition: background-color 0.75s ease;
 }
