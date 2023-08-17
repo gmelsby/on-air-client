@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { LightCategory } from '../LightCategory';
 import BackgroundColorChanger from '../components/BackgroundColorChanger';
 
+// map from LightCategory to text representation
 const displayMap = new Map([
   [LightCategory.Off, 'Off'],
   [LightCategory.OnAir, 'On Air'],
@@ -18,6 +19,7 @@ export default function HomePage({lightState, updateState, isConnected}:
     isConnected: boolean,
   }) {
 
+  // function to push new state to MQTT server
   const attemptUpdate = useCallback((newState: LightCategory) => {
     if (lightState === LightCategory.Offline) {
       console.log('unwilling to update an offline light');
