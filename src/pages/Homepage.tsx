@@ -54,6 +54,7 @@ export default function HomePage({
   return (
     <>
       <div className="flex flex-col justify-around align-middle">
+
         <div
           className={`text-center${
             lightState === 'offline' || !isConnected ? '' : ' pt-36'
@@ -65,22 +66,24 @@ export default function HomePage({
               : displayMap.get(lightState)}
           </h1>
         </div>
+
         {isConnected && lightState !== 'offline' && (
           <div className="flex flex-col md:flex-row justify-center">
-            {lightState !== 'off' && (
-              <OffButton onClick={() => attemptUpdate(LightCategory.Off)}/>
-            )}
-            {lightState !== 'on-air' && (
+            {/* Either Off Button or On-Air Button, depending on state */}
+            {lightState !== 'on-air' ? 
               <button
-                className="btn h-20 md:w-48 bg-red-600 m-2 text-stroke text-xl
-            shadow-inner shadow-red-300
-            hover:bg-red-800"
-                onClick={() => attemptUpdate(LightCategory.OnAir)}
-              >
-                On Air
+                  className="btn h-20 md:w-48 bg-red-600 m-2 text-stroke text-xl
+                            shadow-inner shadow-red-300
+                            hover:bg-red-800"
+                  onClick={() => attemptUpdate(LightCategory.OnAir)}
+                >
+                  On Air
               </button>
-            )}
-            {lightState !== 'on-camera' && (
+            :
+              <OffButton onClick={() => attemptUpdate(LightCategory.Off)}/>
+            }
+
+            {lightState !== 'on-camera' ?
               <button
                 className="btn h-20 md:w-48 bg-blue-600 m-2 text-stroke text-xl
             shadow-inner shadow-blue-300
@@ -89,7 +92,9 @@ export default function HomePage({
               >
                 On Camera
               </button>
-            )}
+            :
+              <OffButton onClick={() => attemptUpdate(LightCategory.Off)} />
+            }
           </div>
         )}
       </div>
