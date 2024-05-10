@@ -3,6 +3,20 @@ import { useCallback } from 'react';
 import { LightCategory } from '../LightCategory';
 import useBackgroundColorChanger from '../hooks/useBackgroundColorChanger';
 
+// off button for reuse
+const OffButton = ({ onClick }: {onClick: React.MouseEventHandler<HTMLButtonElement>}) => {
+  return (
+    <button
+      className="btn h-20 md:w-48 bg-gray-600 m-2 text-stroke text-xl
+                  shadow-inner shadow-gray-300
+                hover:bg-gray-800"
+                onClick={onClick}
+    >
+      Off
+    </button>
+  );
+}
+
 // map from LightCategory to text representation
 const displayMap = new Map([
   [LightCategory.Off, 'Off'],
@@ -54,18 +68,11 @@ export default function HomePage({
         {isConnected && lightState !== 'offline' && (
           <div className="flex flex-col md:flex-row justify-center">
             {lightState !== 'off' && (
-              <button
-                className="btn bg-gray-600 m-2 text-stroke text-xl
-            shadow-inner shadow-gray-300
-            hover:bg-gray-800"
-                onClick={() => attemptUpdate(LightCategory.Off)}
-              >
-                Off
-              </button>
+              <OffButton onClick={() => attemptUpdate(LightCategory.Off)}/>
             )}
             {lightState !== 'on-air' && (
               <button
-                className="btn bg-red-600 m-2 text-stroke text-xl
+                className="btn h-20 md:w-48 bg-red-600 m-2 text-stroke text-xl
             shadow-inner shadow-red-300
             hover:bg-red-800"
                 onClick={() => attemptUpdate(LightCategory.OnAir)}
@@ -75,7 +82,7 @@ export default function HomePage({
             )}
             {lightState !== 'on-camera' && (
               <button
-                className="btn bg-blue-600 m-2 text-stroke text-xl
+                className="btn h-20 md:w-48 bg-blue-600 m-2 text-stroke text-xl
             shadow-inner shadow-blue-300
             hover:bg-blue-800"
                 onClick={() => attemptUpdate(LightCategory.OnCamera)}
