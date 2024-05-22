@@ -1,7 +1,7 @@
 // maps LightCategory to display string
 import { useCallback } from 'react';
 import { LightCategory } from '../LightCategory';
-import useBackgroundColorChanger from '../hooks/useBackgroundColorChanger';
+import usePageDetailUpdater from '../hooks/usePageDetailUpdater';
 
 // off button for reuse
 const OffButton = ({ onClick }: {onClick: React.MouseEventHandler<HTMLButtonElement>}) => {
@@ -34,8 +34,8 @@ export default function HomePage({
   updateState: (newState: LightCategory) => void;
   isConnected: boolean;
 }) {
-  // automatically update background color when prop value changes
-  useBackgroundColorChanger(lightState);
+  // automatically update background color and favicon when prop value changes
+  usePageDetailUpdater(lightState);
   // function to push new state to MQTT server
   const attemptUpdate = useCallback(
     (newState: LightCategory) => {
