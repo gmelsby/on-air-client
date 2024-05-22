@@ -10,12 +10,12 @@ const OffButton = ({ onClick }: {onClick: React.MouseEventHandler<HTMLButtonElem
       className="btn h-20 md:w-48 bg-gray-600 m-2 text-stroke text-xl
                   shadow-inner shadow-gray-300
                 hover:bg-gray-800"
-                onClick={onClick}
+      onClick={onClick}
     >
       Off
     </button>
   );
-}
+};
 
 // map from LightCategory to text representation
 const displayMap = new Map([
@@ -72,14 +72,14 @@ export default function HomePage({
             {/* Either Off Button or On-Air Button, depending on state */}
             {lightState !== 'on-air' ? 
               <button
-                  className="btn h-20 md:w-48 bg-red-600 m-2 text-stroke text-xl
+                className="btn h-20 md:w-48 bg-red-600 m-2 text-stroke text-xl
                             shadow-inner shadow-red-300
                             hover:bg-red-800"
-                  onClick={() => attemptUpdate(LightCategory.OnAir)}
-                >
+                onClick={() => attemptUpdate(LightCategory.OnAir)}
+              >
                   On Air
               </button>
-            :
+              :
               <OffButton onClick={() => attemptUpdate(LightCategory.Off)}/>
             }
 
@@ -92,7 +92,7 @@ export default function HomePage({
               >
                 On Camera
               </button>
-            :
+              :
               <OffButton onClick={() => attemptUpdate(LightCategory.Off)} />
             }
           </div>
