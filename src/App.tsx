@@ -49,14 +49,14 @@ export default function App() {
 
     // handle lost connections
     mqttClient.onConnectionLost = (error) => {
-      console.log(`Connection lost: ${error.errorCode}: ${error.errorMessage}`);
+      console.error(`Connection lost: ${error.errorCode}: ${error.errorMessage}`);
       setIsConnected(false);
     };
 
     mqttClient.connect({
       onSuccess: onConnect,
-      onFailure: () => {
-        console.log('failed to connect');
+      onFailure: (error) => {
+        console.error(`failed to connect: ${error.errorCode}: ${error.errorMessage}`);
       },
       reconnect: true,
       timeout: 5,
