@@ -2,9 +2,10 @@
 import { useCallback } from 'react';
 import { LightCategory } from '../LightCategory';
 import usePageDetailUpdater from '../hooks/usePageDetailUpdater';
+import LightbulbScene from '../components/LightbulbScene';
 
 // off button for reuse
-const OffButton = ({ onClick }: {onClick: React.MouseEventHandler<HTMLButtonElement>}) => {
+const OffButton = ({ onClick }: { onClick: React.MouseEventHandler<HTMLButtonElement> }) => {
   return (
     <button
       className="btn h-20 md:w-48 bg-gray-600 m-2 text-stroke text-xl
@@ -55,10 +56,9 @@ export default function HomePage({
     <>
       <div className="flex flex-col justify-around align-middle">
 
+        <LightbulbScene />
         <div
-          className={`text-center${
-            lightState === 'offline' || !isConnected ? '' : ' pt-36'
-          }`}
+          className={`text-center${lightState === 'offline' || !isConnected ? '' : ' pt-36'}`}
         >
           <h1 className="text-6xl text-white font-bold text-stroke">
             {lightState === undefined || !isConnected
@@ -70,17 +70,17 @@ export default function HomePage({
         {isConnected && lightState !== 'offline' && (
           <div className="flex flex-col md:flex-row justify-center">
             {/* Either Off Button or On-Air Button, depending on state */}
-            {lightState !== 'on-air' ? 
+            {lightState !== 'on-air' ?
               <button
                 className="btn h-20 md:w-48 bg-red-600 m-2 text-stroke text-xl
                             shadow-inner shadow-red-300
                             hover:bg-red-800"
                 onClick={() => attemptUpdate(LightCategory.OnAir)}
               >
-                  On Air
+                On Air
               </button>
               :
-              <OffButton onClick={() => attemptUpdate(LightCategory.Off)}/>
+              <OffButton onClick={() => attemptUpdate(LightCategory.Off)} />
             }
 
             {lightState !== 'on-camera' ?
