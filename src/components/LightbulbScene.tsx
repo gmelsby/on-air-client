@@ -36,31 +36,31 @@ function Lightbulb({ color }: { color: string }) {
       </mesh>
 
       <mesh>
-        <sphereGeometry args={[4, 32, 32]} />
+        <sphereGeometry args={[15, 32, 32]} />
         <meshBasicMaterial
           color={color}
           transparent={true}
           opacity={0.1}
           toneMapped={false}
+          side={THREE.BackSide}
         />
       </mesh>
-
       <mesh>
-        <sphereGeometry args={[14, 32, 32]} />
-        <meshBasicMaterial
-          color={color}
-          transparent={true}
-          opacity={0.1}
-          toneMapped={false}
-        />
-      </mesh>
-
-      <mesh>
-        <sphereGeometry args={[24, 32, 32]} />
+        <sphereGeometry args={[25, 32, 32]} />
         <meshBasicMaterial
           color={color}
           transparent={true}
           opacity={0.05}
+          toneMapped={false}
+          side={THREE.BackSide}
+        />
+      </mesh>
+      <mesh>
+        <sphereGeometry args={[35, 32, 32]} />
+        <meshBasicMaterial
+          color={color}
+          transparent={true}
+          opacity={0.025}
           toneMapped={false}
           side={THREE.BackSide}
         />
