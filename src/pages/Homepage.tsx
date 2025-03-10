@@ -70,9 +70,11 @@ export default function HomePage({
         />
       )}
 
-      <div className="flex flex-col justify-around align-middle">
-        <div className={"text-center"}>
-          <h1 className="text-6xl text-white font-bold text-stroke">
+      <div
+        className={`flex flex-col ${lightState !== "offline" ? "justify-between" : "justify-center"} align-middle`}
+      >
+        <div className="text-center">
+          <h1 className="text-6xl text-white font-bold text-stroke my-20 md:my-32">
             {lightState === undefined || !isConnected
               ? "Attempting to connect..."
               : displayMap.get(lightState)}
@@ -80,7 +82,7 @@ export default function HomePage({
         </div>
 
         {isConnected && lightState !== "offline" && (
-          <div className="flex flex-col md:flex-row justify-center">
+          <div className="flex flex-col md:flex-row justify-center my-5 md:my-16">
             {/* Either Off Button or On-Air Button, depending on state */}
             {lightState !== "on-air" ? (
               <button
