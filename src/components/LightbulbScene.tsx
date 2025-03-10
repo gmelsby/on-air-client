@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Canvas } from "@react-three/fiber";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { KernelSize, Resolution } from "postprocessing";
+import * as THREE from "three";
 
 import { useGLTF } from "@react-three/drei";
 
@@ -21,34 +23,41 @@ Title: Incandescent Light Bulb
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Object_4.geometry}
+            // @ts-expect-error
+            geometry={nodes.Object_4.geometry as THREE.BufferGeometry}
             material={materials.LMP0002_Metal}
           />
           <mesh
             castShadow
             receiveShadow
+            // @ts-expect-error
             geometry={nodes.Object_5.geometry}
             material={materials.LMP0002_GlassNo_Refraction}
           />
           <mesh
             castShadow
             receiveShadow
+            // @ts-expect-error
             geometry={nodes.Object_6.geometry}
             material={materials.LMP0002_Plexiglass}
           />
           <mesh
             castShadow
             receiveShadow
+            // @ts-expect-error
             geometry={nodes.Object_7.geometry}
             material={materials.LMP0002_Conductor}
           />
           <mesh
             castShadow
             receiveShadow
+            // @ts-expect-error
             geometry={nodes.Object_8.geometry}
             material={materials.LMP0002_Filament}
           />
-          <mesh castShadow receiveShadow geometry={nodes.Object_9.geometry}>
+          <mesh castShadow receiveShadow
+            // @ts-expect-error
+            geometry={nodes.Object_9.geometry}>
             <meshStandardMaterial
               color={"gray"}
               emissive={color}
