@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background-color: grey;
-}
-
 html,
 body,
 #root,
