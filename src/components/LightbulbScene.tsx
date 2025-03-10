@@ -1,28 +1,11 @@
-import { OrbitControls } from "@react-three/drei";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import { useRef } from "react";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { KernelSize, Resolution } from "postprocessing";
 import * as THREE from "three";
 
-function CameraLight() {
-  const ref = useRef<THREE.DirectionalLight>(null);
-  const { camera } = useThree();
-
-  useFrame(() => {
-    if (ref.current) {
-      ref.current.position.copy(camera.position);
-    }
-  });
-
-  return <directionalLight ref={ref} intensity={0.5} />;
-}
-
 function Lightbulb({ color }: { color: string }) {
   const ref = useRef<THREE.Mesh>(null);
-  useFrame((_, delta) => {
-    if (ref.current) ref.current.rotation.x += delta;
-  });
   return (
     <group>
       <mesh ref={ref}>
@@ -35,37 +18,17 @@ function Lightbulb({ color }: { color: string }) {
         />
       </mesh>
 
-      <mesh>
-        <sphereGeometry args={[15, 32, 32]} />
-        <meshBasicMaterial
-          color={color}
-          transparent={true}
-          opacity={0.1}
-          toneMapped={false}
-          side={THREE.BackSide}
-        />
-      </mesh>
-      <mesh>
-        <sphereGeometry args={[25, 32, 32]} />
-        <meshBasicMaterial
-          color={color}
-          transparent={true}
-          opacity={0.05}
-          toneMapped={false}
-          side={THREE.BackSide}
-        />
-      </mesh>
-      <mesh>
-        <sphereGeometry args={[35, 32, 32]} />
-        <meshBasicMaterial
-          color={color}
-          transparent={true}
-          opacity={0.025}
-          toneMapped={false}
-          side={THREE.BackSide}
-        />
-      </mesh>
+      <pointLight intensity={75} decay={1} color={color} />
     </group>
+  );
+}
+
+function Backdrop() {
+  return (
+    <mesh position={[0, 0, -10]}>
+      <boxGeometry args={[100, 100, 3]} />
+      <meshStandardMaterial color={"gray"} roughness={0.4} metalness={0.5} />
+    </mesh>
   );
 }
 
@@ -80,8 +43,8 @@ export default function LightbulbScene({ color }: { color: string }) {
           far: 1000,
         }}
       >
-        <ambientLight intensity={0.3} />
-        <CameraLight />
+        <ambientLight intensity={0.5} />
+        <Backdrop />
         <Lightbulb color={color} />
         <EffectComposer>
           <Bloom
