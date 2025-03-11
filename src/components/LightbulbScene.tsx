@@ -86,7 +86,7 @@ Title: Incandescent Light Bulb
         </group>
       </group>
       <pointLight
-        intensity={75}
+        intensity={125}
         decay={1}
         color={color}
         position={[0, 5.3, -3]}
