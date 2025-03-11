@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { KernelSize, Resolution } from "postprocessing";
+import { useEffect, useRef, useState } from 'react';
 import * as THREE from "three";
 
 import { useGLTF } from "@react-three/drei";
@@ -15,10 +16,27 @@ License: CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
 Source: https://sketchfab.com/3d-models/incandescent-light-bulb-217c6b059c584243893b36ab76472ddd
 Title: Incandescent Light Bulb
 */ export function Model({ color }: { color: string }) {
+  const [rotating, setRotating] = useState(false);
   const { nodes, materials } = useGLTF("/bulb/lightbulb.gltf");
+  const ref = useRef<THREE.Group>(null);
+
+  useEffect(() => {
+    if (color !== 'black')
+      setRotating(true);
+  }, [color]);
+
+  useFrame((_, delta) => {
+    if (ref.current && rotating) {
+      ref.current.rotation.z -= delta * Math.PI * 3;
+      if (ref.current.rotation.z <= -2 * Math.PI) {
+        setRotating(false);
+        ref.current.rotation.z = 0;
+      }
+    }
+  });
   return (
     <group dispose={null} position={[0, -2, 0]}>
-      <group rotation={[-Math.PI / 2, 0, 0]} scale={45}>
+      <group ref={ref} rotation={[-Math.PI / 2, 0, 0]} scale={45}>
         <group rotation={[Math.PI / 2, 0, 0]}>
           <mesh
             castShadow
@@ -61,7 +79,7 @@ Title: Incandescent Light Bulb
             <meshStandardMaterial
               color={"gray"}
               emissive={color}
-              emissiveIntensity={15}
+              emissiveIntensity={8}
               toneMapped={false}
             />
           </mesh>
@@ -79,9 +97,9 @@ Title: Incandescent Light Bulb
 
 function Backdrop() {
   return (
-    <mesh position={[0, 0, -10]}>
+    <mesh position={[0, 0, -15]}>
       <boxGeometry args={[100, 100, 3]} />
-      <meshStandardMaterial color={"gray"} roughness={0.9} metalness={0.7} />
+      <meshStandardMaterial color={"#8294a1"} roughness={0.9} metalness={0.5} />
     </mesh>
   );
 }
@@ -108,7 +126,7 @@ export default function LightbulbScene({ color }: { color: string }) {
             resolutionY={Resolution.AUTO_SIZE}
             luminanceThreshold={0.1}
             luminanceSmoothing={0.5}
-            intensity={10}
+            intensity={6}
             mipMap={true}
           />
         </EffectComposer>
