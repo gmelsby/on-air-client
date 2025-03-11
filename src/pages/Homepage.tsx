@@ -64,7 +64,7 @@ export default function HomePage({
             lightState === "on-air"
               ? "red"
               : lightState === "on-camera"
-                ? "blue"
+                ? "#008fff"
                 : "black"
           }
         />
